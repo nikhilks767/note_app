@@ -41,7 +41,7 @@ class NoteCard extends StatelessWidget {
                       onTap: onEditPressed,
                       child: Icon(Icons.edit),
                     ),
-                    SizedBox(width: 7),
+                    SizedBox(width: 12),
                     InkWell(
                       onTap: onDeletePressed,
                       child: Icon(Icons.delete),
@@ -56,8 +56,11 @@ class NoteCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(date),
-                SizedBox(width: 7),
+                Text(
+                  date,
+                  style: TextStyle(fontSize: 12),
+                ),
+                SizedBox(width: 12),
                 Icon(Icons.share),
               ],
             )

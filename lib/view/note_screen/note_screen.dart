@@ -17,7 +17,6 @@ class _NoteScreenState extends State<NoteScreen> {
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController desccontroller = TextEditingController();
   TextEditingController datecontroller = TextEditingController();
-
   int selectedclrIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,12 @@ class _NoteScreenState extends State<NoteScreen> {
         separatorBuilder: (context, index) => SizedBox(height: 7),
       ),
       floatingActionButton: FloatingActionButton(
+        shape: CircleBorder(),
         onPressed: () {
+          titlecontroller.clear();
+          desccontroller.clear();
+          datecontroller.clear();
+          selectedclrIndex = 0;
           customBottomSheet(context: context);
         },
         child: Icon(
@@ -125,7 +129,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     },
                     child: Icon(
                       Icons.date_range_rounded,
-                      color: Colors.black,
+                      color: ColorConstants.black,
                     ),
                   ),
                 ),
@@ -177,12 +181,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       }
 
                       Navigator.pop(context);
-                      setState(() {
-                        titlecontroller.clear();
-                        desccontroller.clear();
-                        datecontroller.clear();
-                        selectedclrIndex = 0;
-                      });
+                      setState(() {});
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 7),

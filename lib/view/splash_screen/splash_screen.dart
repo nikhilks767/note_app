@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_app/core/constants/color_constants.dart';
 import 'package:note_app/view/note_screen/note_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: ColorConstants.clr1,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -43,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               "NoteApp",
               style: GoogleFonts.rem(
-                color: Colors.black,
+                color: ColorConstants.black,
                 fontWeight: FontWeight.w900,
                 fontSize: 25,
               ),

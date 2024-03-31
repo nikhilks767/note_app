@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:note_app/view/note_screen/note_screen.dart';
 import 'package:note_app/view/splash_screen/splash_screen.dart';
 
 main() {
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: NoteScreen(),
+      home: SplashScreen(),
     );
   }
 }
