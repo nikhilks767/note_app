@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +14,12 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
+  @override
+  void initState() {
+    NoteScreenController.initKeys();
+    super.initState();
+  }
+
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController desccontroller = TextEditingController();
   TextEditingController datecontroller = TextEditingController();
@@ -22,26 +28,29 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.separated(
-        itemCount: NoteScreenController.noteList.length,
-        itemBuilder: (context, index) => NoteCard(
-          title: NoteScreenController.noteList[index]["title"],
-          desc: NoteScreenController.noteList[index]["desc"],
-          date: NoteScreenController.noteList[index]["date"],
-          clrIndex: NoteScreenController.noteList[index]["colorIndex"],
-          onDeletePressed: () {
-            NoteScreenController.deleteNote(index);
-            setState(() {});
-          },
-          onEditPressed: () {
-            titlecontroller.text =
-                NoteScreenController.noteList[index]["title"];
-            desccontroller.text = NoteScreenController.noteList[index]["desc"];
-            datecontroller.text = NoteScreenController.noteList[index]["date"];
-            selectedclrIndex =
-                NoteScreenController.noteList[index]["colorIndex"];
-            customBottomSheet(context: context, isEdit: true, index: index);
-          },
-        ),
+        itemCount: NoteScreenController.noteListKeys.length,
+        itemBuilder: (context, index) {
+          final currentKey = NoteScreenController.noteListKeys[index];
+          final currentElement = NoteScreenController.myBox.get(currentKey);
+          return NoteCard(
+            title: currentElement["title"],
+            desc: currentElement["desc"],
+            date: currentElement["date"],
+            clrIndex: currentElement["colorIndex"],
+            onDeletePressed: () async {
+              await NoteScreenController.deleteNote(currentKey);
+              setState(() {});
+            },
+            onEditPressed: () {
+              titlecontroller.text = currentElement["title"];
+              desccontroller.text = currentElement["desc"];
+              datecontroller.text = currentElement["date"];
+              selectedclrIndex = currentElement["colorIndex"];
+              customBottomSheet(
+                  context: context, isEdit: true, currentKey: currentKey);
+            },
+          );
+        },
         separatorBuilder: (context, index) => SizedBox(height: 7),
       ),
       floatingActionButton: FloatingActionButton(
@@ -63,7 +72,7 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Future<dynamic> customBottomSheet(
-      {required BuildContext context, bool isEdit = false, int? index}) {
+      {required BuildContext context, bool isEdit = false, var currentKey}) {
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -162,24 +171,28 @@ class _NoteScreenState extends State<NoteScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (isEdit == true) {
                         NoteScreenController.editNote(
-                          index: index!,
+                          key: currentKey,
                           title: titlecontroller.text,
                           desc: desccontroller.text,
                           date: datecontroller.text,
                           clrIndex: selectedclrIndex,
                         );
                       } else {
-                        NoteScreenController.addNote(
-                          title: titlecontroller.text,
-                          desc: desccontroller.text,
-                          date: datecontroller.text,
-                          clrIndex: selectedclrIndex,
-                        );
+                        if (titlecontroller.text.isEmpty &&
+                            desccontroller.text.isEmpty) {
+                          SizedBox();
+                        } else {
+                          await NoteScreenController.addNote(
+                            title: titlecontroller.text,
+                            desc: desccontroller.text,
+                            date: datecontroller.text,
+                            clrIndex: selectedclrIndex,
+                          );
+                        }
                       }
-
                       Navigator.pop(context);
                       setState(() {});
                     },

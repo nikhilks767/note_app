@@ -21,3 +21,4 @@ samples, guidance on mobile development, and a full API reference.
 ![note_ui](screenshots/note_ui.png)
 ![edit_note](screenshots/edit_note.png)
 ![date](screenshots/date.png)
+![share](screenshots/share.png)
